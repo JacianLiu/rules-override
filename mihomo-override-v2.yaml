@@ -51,7 +51,7 @@ function main(config) {
     port: 8889,
     secret: "Jacian",
     "socks-port": 8899,
-    // "ipv6": true,
+    "ipv6": false,
   });
 
   config["experimental"] = {
@@ -61,7 +61,7 @@ function main(config) {
   config["tun"] = {
     enable: true, 
     stack: "mixed", 
-    "dns-hijack": ["any:53"],
+    "dns-hijack": ["any:53", "tcp://any:53"],
     "strict-route": true,
     "auto-route": true, 
     "disable-icmp-forwarding": true,
@@ -92,11 +92,7 @@ function main(config) {
     "respect-rules": false,
     "default-nameserver": ["223.5.5.5", "119.29.29.29"],
     nameserver: ["system"],
-    "proxy-server-nameserver": [
-      "223.5.5.5", "119.29.29.29",
-      "https://120.53.53.53/dns-query", "https://223.5.5.5/dns-query",
-      "https://114.114.114.114/dns-query"
-    ],
+    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"],
     "nameserver-policy": {
       "+.didichuxing.com": "system", "+.didiglobal.com": "system",
       "+.didistatic.com": "system", "+.diditaxi.com.cn": "system",
