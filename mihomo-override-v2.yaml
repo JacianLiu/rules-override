@@ -200,16 +200,16 @@ function main(config) {
     "RULE-SET,openai,🤖 AI 服务",
     "RULE-SET,anthropic,🤖 AI 服务",
     "RULE-SET,private,🏠 私有网络",
-    "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,geolocation-cn,🔒 国内服务",
-    "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
     "RULE-SET,microsoft,Ⓜ️ 微软服务",
     "RULE-SET,onedrive,Ⓜ️ 微软服务",
     "RULE-SET,apple,🍎 苹果服务",
     "RULE-SET,icloud,🍎 苹果服务",
     "RULE-SET,geolocation-!cn,🌍 非中国",
     "RULE-SET,cn,🔒 国内服务",
-    "MATCH,🐟 漏网之鱼"
+    "RULE-SET,private-ip,🏠 私有网络,no-resolve",
+    "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
+    "MATCH,🐟 漏网之鱼" 
   ];
 
   return config;
