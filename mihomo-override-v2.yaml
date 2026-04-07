@@ -54,20 +54,23 @@ function main(config) {
     // "ipv6": true,
   });
 
-    config["experimental"] = {
-      "ignore-resolve-fail": true
-    };
+  config["experimental"] = {
+    "ignore-resolve-fail": true
+  };
 
   config["tun"] = {
-    enable: true, stack: "mixed", "dns-hijack": ["any:53"],
+    enable: true, 
+    stack: "mixed", 
+    "dns-hijack": ["any:53"],
     "strict-route": true,
-    "auto-route": true, "disable-icmp-forwarding": true,
+    "auto-route": true, 
+    "disable-icmp-forwarding": true,
     "route-exclude-address": [
       "172.16.0.0/12", "10.0.0.0/8", "192.168.0.0/16",
       "100.64.0.0/10", "127.0.0.0/8", "169.254.0.0/16",
       "224.0.0.0/4", "fc00::/7", "fe80::/10"
     ],
-    mtu: 1500
+    mtu: 1280
   };
 
   config["url-rewrite"] = [
@@ -100,6 +103,7 @@ function main(config) {
       "+.intra.xiaojukeji.com": "system", "+.xiaojukeji.com": "system"
     },
     "fake-ip-filter": [
+      "geosite:connectivity-check", "geosite:private", "geosite:cn",
       "+.lan", "+.local", "stun.*.*.*", "stun.*.*",
       "time.windows.com", "time.nist.gov", "time.apple.com", "time.asia.apple.com",
       "*.ntp.org.cn", "*.openwrt.pool.ntp.org", "time1.cloud.tencent.com",
