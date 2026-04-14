@@ -194,7 +194,8 @@ function main(config) {
     "openai": dp("openai"), "anthropic": dp("anthropic"),
     "google-gemini": dp("google-gemini"),
     "microsoft": dp("microsoft"), "onedrive": dp("onedrive"),
-    "apple": dp("apple"), "icloud": dp("icloud"), "cn": dp("cn")
+    "apple": dp("apple"), "icloud": dp("icloud"), "cn": dp("cn"),
+    "self-cn": { type: "http", behavior: "domain", url: "https://cdn.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/cn.list", path: "./ruleset/self-cn.list", interval: 86400, format: "yaml" }
   };
 
   // ====== 规则 ======
@@ -214,6 +215,7 @@ function main(config) {
     "RULE-SET,cn,🔒 国内服务",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
+    "RULE-SET,self-cn,🔒 国内服务,no-resolve",
     "MATCH,🐟 漏网之鱼"
   ];
 
