@@ -99,7 +99,50 @@ function main(config) {
     "prefer-h3": false,
     "respect-rules": false,
     "default-nameserver": ["223.5.5.5", "119.29.29.29"],
-    nameserver: ["system"],
+    // nameserver: ["system"],
+    nameserver: [
+      "180.76.76.76",
+      "119.29.29.29",
+      "180.184.1.1",
+      "223.5.5.5",
+      "https://223.6.6.6/dns-query#h3=true",
+      "https://dns.alidns.com/dns-query",
+      "https://doh.pub/dns-query"
+    ],
+    
+    // 3. 后备 DNS (剥离了会返回污染 IP 的国内 DNS)
+    fallback: [
+      "https://000000.dns.nextdns.io/dns-query#h3=true",
+      "https://public.dns.iij.jp/dns-query",
+      "https://101.101.101.101/dns-query",
+      "https://208.67.220.220/dns-query",
+      "tls://8.8.4.4",
+      "tls://1.0.0.1:853",
+      "https://cloudflare-dns.com/dns-query",
+      "https://dns.google/dns-query"
+    ],
+    
+    // 4. Fallback 触发过滤器 (采用你提供的数据)
+    "fallback-filter": {
+      "geoip": true,
+      "ipcidr": [
+        "240.0.0.0/4",
+        "0.0.0.0/32",
+        "127.0.0.1/32"
+      ],
+      "domain": [
+        "+.google.com",
+        "+.facebook.com",
+        "+.twitter.com",
+        "+.youtube.com",
+        "+.xn--ngstr-lra8j.com",
+        "+.google.cn",
+        "+.googleapis.cn",
+        "+.googleapis.com",
+        "+.gvt1.com"
+      ]
+    },
+
     "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"],
     "nameserver-policy": {
       "+.didichuxing.com": "system", "+.didiglobal.com": "system",
