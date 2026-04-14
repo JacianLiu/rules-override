@@ -213,9 +213,9 @@ function main(config) {
     "RULE-SET,icloud,🍎 苹果服务",
     "RULE-SET,geolocation-!cn,🌍 非中国",
     "RULE-SET,cn,🔒 国内服务",
+    "RULE-SET,self-cn,🔒 国内服务",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
-    "RULE-SET,self-cn,🔒 国内服务",
     "MATCH,🐟 漏网之鱼"
   ];
 
