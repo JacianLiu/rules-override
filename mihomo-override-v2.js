@@ -255,6 +255,7 @@ function main(config) {
     "google-gemini":         dp("google-gemini"),
     "microsoft":             dp("microsoft"),      "onedrive":     dp("onedrive"),
     "apple":                 dp("apple"),          "icloud":       dp("icloud"),
+    "geolocation-!cn":       dp("geolocation-!cn"),
     "cn":                    dp("cn"),
     "self-cn": {
       type: "http", behavior: "domain", format: "text", interval: 86400,
