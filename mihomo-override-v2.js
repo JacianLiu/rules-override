@@ -245,7 +245,7 @@ function main(config) {
 
   // ====== 规则提供者 ======
   const B  = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo";
-  const E  = "https://raw.githubusercontent.com/echs-top/proxy/main/rules/mrs";
+  const E  = "https://cdn.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
   const dp = (n) => ({ type: "http", behavior: "domain", url: `${B}/geosite/${n}.mrs`, path: `./ruleset/${n}.mrs`,    interval: 86400, format: "mrs" });
   const ip = (n) => ({ type: "http", behavior: "ipcidr", url: `${B}/geoip/${n}.mrs`,   path: `./ruleset/${n}-ip.mrs`, interval: 86400, format: "mrs" });
   const ep = (n, file) => ({ type: "http", behavior: "domain", url: `${E}/${file}`, path: `./ruleset/echs-${n}.mrs`, interval: 86400, format: "mrs" });
