@@ -1,5 +1,10 @@
 // Sub-Store 覆写脚本
 function main(config) {
+
+  const ua = $options?._req?.headers?.['user-agent'] || '';
+  const isStash = /Stash/i.test(ua);
+  console.log("这次请求 ua", ua, isStash )
+  
   // ====== 正则匹配规则 ======
   const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const buildRegex = (tokens) => new RegExp(tokens.map(token => {
