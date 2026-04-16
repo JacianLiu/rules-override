@@ -65,7 +65,7 @@ function main(config) {
 
   config["tun"] = {
     enable: true,
-    stack: "mixed",
+    stack: "system",
     "dns-hijack": ["any:53", "tcp://any:53"],
     "strict-route": true,
     "auto-route": true,
@@ -75,7 +75,7 @@ function main(config) {
       "100.64.0.0/10", "127.0.0.0/8", "169.254.0.0/16",
       "224.0.0.0/4", "fc00::/7", "fe80::/10"
     ],
-    mtu: 1280
+    mtu: 1420
   };
 
   config["url-rewrite"] = [
@@ -200,7 +200,7 @@ function main(config) {
   config["dns"] = { ...DNS_BASE, ...DNS_PATCH };
 
   // ====== 其他 ======
-  config["profile"] = { "store-selected": true, "store-fake-ip": true };
+  config["profile"] = { "store-selected": true, "store-fake-ip": false };
   config["sniffer"] = {
     enable: true,
     "parse-pure-ip": true,
@@ -213,7 +213,7 @@ function main(config) {
   config["geodata-mode"] = true;
   config["geo-auto-update"] = true;
   config["geodata-loader"] = "standard";
-  config["geo-update-interval"] = 24;
+  config["geo-update-interval"] = 8;
   config["geox-url"] = {
     geoip:   "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat",
     geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
