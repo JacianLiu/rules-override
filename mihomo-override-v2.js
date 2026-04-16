@@ -232,7 +232,7 @@ function main(config) {
     sel("🎯 中转节点", [...transit]),
     sel("🚀 节点选择", ["DIRECT", ...regionGroups, ...allNames]),
     fullSelect("✨ Gemini"),
-    fullSelect("🤖 AI 服务"),
+    sel("🤖 AI 服务", ["🚀 节点选择", "🏠 家宽节点"]),
     fullSelect("Ⓜ️ 微软服务"),
     fullSelect("🍎 苹果服务"),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...regionGroups, "🚀 节点选择", ...allNames]),
