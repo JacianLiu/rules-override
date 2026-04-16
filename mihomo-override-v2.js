@@ -53,13 +53,17 @@ function main(config) {
     "log-level": "info",
     "unified-delay": true,
     "tcp-concurrent": true,
-    "find-process-mode": "strict",
+    "find-process-mode": "off",
+    "disable-keep-alive": false,
+    "keep-alive-interval": 15,
+    "keep-alive-idle": 300,
     "external-controller": "127.0.0.1:6170",
     port: 8889,
     secret: "Jacian",
     "socks-port": 8899,
     "ipv6": false,
   });
+
 
   config["experimental"] = { "ignore-resolve-fail": true };
 
