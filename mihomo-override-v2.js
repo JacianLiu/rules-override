@@ -223,14 +223,14 @@ function main(config) {
 
   // ====== 代理分组 ======
   config["proxy-groups"] = [
-    sel("🇺🇸 美国",   ["DIRECT", "REJECT", ...us]),
-    sel("🇭🇰 香港",   ["DIRECT", "REJECT", ...hk]),
-    sel("🇸🇬 新加坡", ["DIRECT", "REJECT", ...sg]),
-    sel("🇯🇵 日本",   ["DIRECT", "REJECT", ...jp]),
-    sel("🏠 家宽节点", ["DIRECT", "REJECT", ...jiakuan]),
-    sel("🌐 其他",     ["DIRECT", "REJECT", ...other]),
-    sel("🎯 中转节点", ["DIRECT", "REJECT", ...transit]),
-    sel("🚀 节点选择", ["DIRECT", "REJECT", ...regionGroups, ...allNames]),
+    sel("🇺🇸 美国",   [...us]),
+    sel("🇭🇰 香港",   [...hk]),
+    sel("🇸🇬 新加坡", [...sg]),
+    sel("🇯🇵 日本",   [...jp]),
+    sel("🏠 家宽节点", [...jiakuan]),
+    sel("🌐 其他",     [...other]),
+    sel("🎯 中转节点", [...transit]),
+    sel("🚀 节点选择", ["DIRECT", ...regionGroups, ...allNames]),
     fullSelect("✨ Gemini"),
     fullSelect("🤖 AI 服务"),
     fullSelect("Ⓜ️ 微软服务"),
