@@ -17,6 +17,7 @@ function main(config) {
     香港:   buildRegex(["香港", "HK", "HKG", "HONG KONG", "HONGKONG", "🇭🇰"]),
     新加坡: buildRegex(["新加坡", "狮城", "SG", "SGP", "SINGAPORE", "SIN", "🇸🇬"]),
     日本:   buildRegex(["日本", "东京", "大阪", "JP", "JPN", "JAPAN", "TOKYO", "OSAKA", "NRT", "HND", "TYO", "🇯🇵"]),
+    家宽:   /家宽|Frontier|Residential/i,
     落地:   /落地/i,
   };
 
@@ -24,24 +25,24 @@ function main(config) {
   const allNames = (config.proxies || []).map(p => p.name);
   const match = (regex) => allNames.filter(n => regex.test(n));
   const matchExclude = (include, exclude) => allNames.filter(n => include.test(n) && !exclude.test(n));
-  const isLanding = (n) => REGEX.落地.test(n);
+  const isJiakuan = (n) => REGEX.家宽.test(n);
 
-  const landing = match(REGEX.落地);
-  const us      = matchExclude(REGEX.美国, REGEX.落地);
-  const hk      = matchExclude(REGEX.香港, REGEX.落地);
-  const sg      = matchExclude(REGEX.新加坡, REGEX.落地);
-  const jp      = matchExclude(REGEX.日本, REGEX.落地);
-  const other   = allNames.filter(n => !isLanding(n) && ![REGEX.美国, REGEX.香港, REGEX.新加坡, REGEX.日本].some(r => r.test(n)));
-  const transit = [...us].filter(n => !isLanding(n));
+  const jiakuan = match(REGEX.家宽);
+  const us      = matchExclude(REGEX.美国, REGEX.家宽);
+  const hk      = matchExclude(REGEX.香港, REGEX.家宽);
+  const sg      = matchExclude(REGEX.新加坡, REGEX.家宽);
+  const jp      = matchExclude(REGEX.日本, REGEX.家宽);
+  const other   = allNames.filter(n => !isJiakuan(n) && ![REGEX.美国, REGEX.香港, REGEX.新加坡, REGEX.日本].some(r => r.test(n)));
+  const transit = [...us].filter(n => !isJiakuan(n));
 
-  // ====== 为落地节点添加 dialer-proxy ======
+  // ====== 仅含"落地"的节点加 dialer-proxy ======
   (config.proxies || []).forEach(p => {
     if (REGEX.落地.test(p.name)) p["dialer-proxy"] = "🎯 中转节点";
   });
 
   // ====== 辅助函数 ======
   const sel = (name, proxies) => ({ name, type: "select", proxies: proxies.length ? proxies : ["DIRECT"] });
-  const regionGroups = ["🇺🇸 美国", "🇭🇰 香港", "🇸🇬 新加坡", "🏠 落地节点", "🇯🇵 日本", "🌐 其他", "🎯 中转节点"];
+  const regionGroups = ["🇺🇸 美国", "🇭🇰 香港", "🇸🇬 新加坡", "🏠 家宽节点", "🇯🇵 日本", "🌐 其他", "🎯 中转节点"];
   const fullSelect = (name) => sel(name, ["🚀 节点选择", "DIRECT", "REJECT", ...regionGroups, ...allNames]);
 
   // ====== 基础设置 ======
@@ -93,14 +94,23 @@ function main(config) {
     "default-nameserver": ["223.5.5.5", "119.29.29.29"],
   };
 
-  // 两端共用的 policy：仅滴滴（原脚本原有内容）
-  const DNS_POLICY_COMMON = {
+  const DNS_POLICY_DIDI_STASH = {
     "+.didichuxing.com":      "system",
     "+.didiglobal.com":       "system",
     "+.didistatic.com":       "system",
     "+.diditaxi.com.cn":      "system",
     "+.intra.xiaojukeji.com": "system",
     "+.xiaojukeji.com":       "system",
+  };
+
+  const DIDI_NS = ["172.24.130.235", "223.5.5.5", "1.12.12.12", "114.114.114.114"];
+  const DNS_POLICY_DIDI_MIHOMO = {
+    "+.didichuxing.com":      DIDI_NS,
+    "+.didiglobal.com":       DIDI_NS,
+    "+.didistatic.com":       DIDI_NS,
+    "+.diditaxi.com.cn":      DIDI_NS,
+    "+.intra.xiaojukeji.com": DIDI_NS,
+    "+.xiaojukeji.com":       DIDI_NS,
   };
 
   const DNS_PATCH = isStash ? {
@@ -155,7 +165,7 @@ function main(config) {
       "+.xiaojukeji.com", "+.didichuxing.com", "+.didiglobal.com",
       "+.didistatic.com", "+.diditaxi.com.cn",
     ],
-    "nameserver-policy": { ...DNS_POLICY_COMMON },
+    "nameserver-policy": { ...DNS_POLICY_DIDI_STASH },
   } : {
     "fake-ip-filter-mode": "blacklist",
     "respect-rules": true,
@@ -177,7 +187,7 @@ function main(config) {
       "+.didistatic.com", "+.diditaxi.com.cn",
     ],
     "nameserver-policy": {
-      ...DNS_POLICY_COMMON,
+      ...DNS_POLICY_DIDI_MIHOMO,
       "geosite:cn":            ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
       "geosite:private":       "system",
       "geosite:google-cn":     ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
@@ -217,7 +227,7 @@ function main(config) {
     sel("🇭🇰 香港",   ["DIRECT", "REJECT", ...hk]),
     sel("🇸🇬 新加坡", ["DIRECT", "REJECT", ...sg]),
     sel("🇯🇵 日本",   ["DIRECT", "REJECT", ...jp]),
-    sel("🏠 落地节点", ["DIRECT", "REJECT", ...landing]),
+    sel("🏠 家宽节点", ["DIRECT", "REJECT", ...jiakuan]),
     sel("🌐 其他",     ["DIRECT", "REJECT", ...other]),
     sel("🎯 中转节点", ["DIRECT", "REJECT", ...transit]),
     sel("🚀 节点选择", ["DIRECT", "REJECT", ...regionGroups, ...allNames]),
@@ -225,11 +235,10 @@ function main(config) {
     fullSelect("🤖 AI 服务"),
     fullSelect("Ⓜ️ 微软服务"),
     fullSelect("🍎 苹果服务"),
-    sel("🛑 广告拦截", ["REJECT", "DIRECT", "🚀 节点选择"]),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...regionGroups, "🚀 节点选择", ...allNames]),
     sel("🔒 国内服务", ["DIRECT", "REJECT", ...regionGroups, "🚀 节点选择", ...allNames]),
-    fullSelect("🌍 非中国"),
     fullSelect("🐟 漏网之鱼"),
+    sel("🛑 广告拦截", ["REJECT", "DIRECT", "🚀 节点选择"]),
   ];
 
   // ====== 规则提供者 ======
@@ -241,7 +250,6 @@ function main(config) {
     "category-ads-all":      dp("category-ads-all"),
     "private":               dp("private"),        "private-ip":   ip("private"),
     "geolocation-cn":        dp("geolocation-cn"), "cn-ip":        ip("cn"),
-    "geolocation-!cn":       dp("geolocation-!cn"),
     "category-ai-chat-!cn":  dp("category-ai-chat-!cn"),
     "openai":                dp("openai"),         "anthropic":    dp("anthropic"),
     "google-gemini":         dp("google-gemini"),
@@ -268,7 +276,7 @@ function main(config) {
     "RULE-SET,onedrive,Ⓜ️ 微软服务",
     "RULE-SET,apple,🍎 苹果服务",
     "RULE-SET,icloud,🍎 苹果服务",
-    "RULE-SET,geolocation-!cn,🌍 非中国",
+    "RULE-SET,geolocation-!cn,🚀 节点选择",
     "RULE-SET,cn,🔒 国内服务",
     "RULE-SET,self-cn,🔒 国内服务",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
