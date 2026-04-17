@@ -170,7 +170,7 @@ function main(config) {
       "+.xiaojukeji.com", "+.didichuxing.com", "+.didiglobal.com",
       "+.didistatic.com", "+.diditaxi.com.cn",
     ],
-    "nameserver-policy": { ...DNS_POLICY_DIDI_STASH, "+.cloud-nodes.com": "124.221.68.73:1053"},
+    "nameserver-policy": {"+.cloud-nodes.com": "124.221.68.73:1053", ...DNS_POLICY_DIDI_STASH},
   } : {
     "fake-ip-filter-mode": "blacklist",
     "respect-rules": true,
@@ -192,8 +192,8 @@ function main(config) {
       "+.didistatic.com", "+.diditaxi.com.cn",
     ],
     "nameserver-policy": {
-      ...DNS_POLICY_DIDI_MIHOMO,
       "+.cloud-nodes.com":     ["124.221.68.73:1053"],
+      ...DNS_POLICY_DIDI_MIHOMO,
       "geosite:cn":            ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
       "geosite:private":       ["system"],
       "geosite:google-cn":     ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
