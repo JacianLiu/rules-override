@@ -252,30 +252,36 @@ function main(config) {
   // ====== 规则提供者 ======
   const B  = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo";
   const E  = "https://cdn.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
+  const S  = "https://cdn.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs"
   const dp = (n) => ({ type: "http", behavior: "domain", url: `${B}/geosite/${n}.mrs`, path: `./ruleset/${n}.mrs`,    interval: 86400, format: "mrs" });
   const ip = (n) => ({ type: "http", behavior: "ipcidr", url: `${B}/geoip/${n}.mrs`,   path: `./ruleset/${n}-ip.mrs`, interval: 86400, format: "mrs" });
-  const ep = (n, file) => ({ type: "http", behavior: "domain", url: `${E}/${file}`, path: `./ruleset/echs-${n}.mrs`, interval: 86400, format: "mrs" });
   const ei = (n, file) => ({ type: "http", behavior: "ipcidr", url: `${E}/${file}`, path: `./ruleset/echs-${n}-ip.mrs`, interval: 86400, format: "mrs" });
+  const selfMrs = (n) => ({ type: "http", behavior: "domain", url: `${S}/${n}.mrs`, path: `./ruleset/${n}.mrs`, interval: 86400, format: "mrs" });
 
   config["rule-providers"] = {
+    // 去广告
     "category-ads-all":           dp("category-ads-all"),
-    "private":                    dp("private"),        "private-ip":              ip("private"),
-    "geolocation-cn":             dp("geolocation-cn"), "cn-ip":                   ip("cn"),
-    "category-ai-chat-!cn":       dp("category-ai-chat-!cn"),
-    "openai":                     dp("openai"),         "anthropic":               dp("anthropic"),
+    // 内网域名/IP
+    "private":                    dp("private"),
+    "private-ip":                 ip("private"),
+    // 国外 AI 服务
     "google-gemini":              dp("google-gemini"),
-    "microsoft":                  dp("microsoft"),      "onedrive":                dp("onedrive"),
-    "apple":                      dp("apple"),          "icloud":                  dp("icloud"),
+    "category-ai-chat-!cn":       dp("category-ai-chat-!cn"),
+    // 微软服务
+    "microsoft":                  dp("microsoft"),
+    "onedrive":                   dp("onedrive"),
+    // 苹果服务
+    "apple":                      dp("apple"),
+
+    // 海外域名
     "geolocation-!cn":            dp("geolocation-!cn"),
+    // 国内规则
+    "geolocation-cn":             dp("geolocation-cn"),
     "cn":                         dp("cn"),
-    "self-cn": {
-      type: "http", behavior: "domain", format: "text", interval: 86400,
-      url:  "https://cdn.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/cn.list",
-      path: "./ruleset/self-cn.list",
-    },
+    "cn-ip":                      ip("cn"),
+    // 自补充
+    "supplement-cn":              selfMrs("supplement-cn"),
     // 补充自 echs-top/proxy
-    "fcm":                        ep("fcm",                 "fcm_domain.mrs"),
-    "dnsmasq-china-add":          ep("dnsmasq-china-add",   "dnsmasq-china-add_domain.mrs"),
     "enhanced-FaaS-in-China-ip":  ei("enhanced-FaaS-in-China", "enhanced-FaaS-in-China_ip.mrs"),
   };
 
@@ -284,22 +290,17 @@ function main(config) {
     "RULE-SET,category-ads-all,🛑 广告拦截",
     "RULE-SET,google-gemini,✨ Gemini",
     "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
-    "RULE-SET,openai,🤖 AI 服务",
-    "RULE-SET,anthropic,🤖 AI 服务",
     "RULE-SET,private,🏠 私有网络",
-    "RULE-SET,fcm,🔒 国内服务",               // FCM 国内直连，放在 geolocation-cn 前
     "RULE-SET,geolocation-cn,🔒 国内服务",
     "RULE-SET,microsoft,Ⓜ️ 微软服务",
     "RULE-SET,onedrive,Ⓜ️ 微软服务",
     "RULE-SET,apple,🍎 苹果服务",
-    "RULE-SET,icloud,🍎 苹果服务",
     "RULE-SET,geolocation-!cn,🚀 节点选择",
     "RULE-SET,cn,🔒 国内服务",
-    "RULE-SET,dnsmasq-china-add,🔒 国内服务", // 补充国内域名，放在 cn 后
-    "RULE-SET,self-cn,🔒 国内服务",
+    "RULE-SET,supplement-cn,🔒 国内服务",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
-    "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve", // 国内云服务商 IP
+    "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve",
     "MATCH,🐟 漏网之鱼",
   ];
 
