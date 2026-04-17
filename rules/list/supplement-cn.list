@@ -4,7 +4,8 @@
 +.gravity-engine.com
 +.zijieapi.com
 +.aliyuncs.com
-
++.hasstatic.com
++.hassbian.com
 
 # from https://github.com/echs-top/proxy/blob/main/rules/mrs/dnsmasq-china-add_domain.mrs
 +.000dn.com
