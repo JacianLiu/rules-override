@@ -119,6 +119,27 @@ const REGION_TOKENS = {
 // 这里既决定基础地区分组顺序，也会影响 fullSelect 拼装时的候选顺序。
 const REGION_GROUPS = ["🇺🇸 美国", "🇭🇰 香港", "🇸🇬 新加坡", "🏠 家宽节点", "🇯🇵 日本", "🌐 其他", "🎯 中转节点"];
 
+const ICON_CDN_BASE = "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color";
+
+const GROUP_ICONS = {
+  "🇺🇸 美国": `${ICON_CDN_BASE}/USA.png`,
+  "🇭🇰 香港": `${ICON_CDN_BASE}/Hong_Kong.png`,
+  "🇸🇬 新加坡": `${ICON_CDN_BASE}/Singapore.png`,
+  "🇯🇵 日本": `${ICON_CDN_BASE}/Japan.png`,
+  "🏠 家宽节点": `${ICON_CDN_BASE}/Home.png`,
+  "🌐 其他": `${ICON_CDN_BASE}/Other.png`,
+  "🎯 中转节点": `${ICON_CDN_BASE}/Transfer.png`,
+  "🚀 节点选择": `${ICON_CDN_BASE}/Auto_Link.png`,
+  "✨ Gemini": `${ICON_CDN_BASE}/Google.png`,
+  "🤖 AI 服务": `${ICON_CDN_BASE}/AI.png`,
+  "Ⓜ️ 微软服务": `${ICON_CDN_BASE}/Microsoft.png`,
+  "🍎 苹果服务": `${ICON_CDN_BASE}/Apple.png`,
+  "🏠 私有网络": `${ICON_CDN_BASE}/Home.png`,
+  "🔒 国内服务": `${ICON_CDN_BASE}/China.png`,
+  "🐟 漏网之鱼": `${ICON_CDN_BASE}/Fish.png`,
+  "🛑 广告拦截": `${ICON_CDN_BASE}/Adblock.png`,
+};
+
 // 声明式规则源：这里只描述“有什么 provider / rule”，不写组装逻辑。
 const RULE_PROVIDER_DEFS = [
   { key: "category-ads-all", kind: "meta-domain", source: "category-ads-all" },
@@ -211,7 +232,9 @@ function applyDialerProxy(proxies, regexMap) {
 
 // 构造基础 select 组；空组时回退到 DIRECT，避免生成非法空 proxies 列表。
 function sel(name, proxies) {
-  return { name, type: "select", proxies: proxies.length ? proxies : ["DIRECT"] };
+  const group = { name, type: "select", proxies: proxies.length ? proxies : ["DIRECT"] };
+  if (GROUP_ICONS[name]) group.icon = GROUP_ICONS[name];
+  return group;
 }
 
 // 构造完整选择组：在通用入口前面放常见兜底项，后面再展开所有地区组和真实节点。

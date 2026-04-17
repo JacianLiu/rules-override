@@ -41,7 +41,30 @@ function main(config) {
   });
 
   // ====== 辅助函数 ======
-  const sel = (name, proxies) => ({ name, type: "select", proxies: proxies.length ? proxies : ["DIRECT"] });
+  const ICON_CDN_BASE = "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color";
+  const GROUP_ICONS = {
+    "🇺🇸 美国": `${ICON_CDN_BASE}/USA.png`,
+    "🇭🇰 香港": `${ICON_CDN_BASE}/Hong_Kong.png`,
+    "🇸🇬 新加坡": `${ICON_CDN_BASE}/Singapore.png`,
+    "🇯🇵 日本": `${ICON_CDN_BASE}/Japan.png`,
+    "🏠 家宽节点": `${ICON_CDN_BASE}/Home.png`,
+    "🌐 其他": `${ICON_CDN_BASE}/Other.png`,
+    "🎯 中转节点": `${ICON_CDN_BASE}/Transfer.png`,
+    "🚀 节点选择": `${ICON_CDN_BASE}/Auto_Link.png`,
+    "✨ Gemini": `${ICON_CDN_BASE}/Google.png`,
+    "🤖 AI 服务": `${ICON_CDN_BASE}/AI.png`,
+    "Ⓜ️ 微软服务": `${ICON_CDN_BASE}/Microsoft.png`,
+    "🍎 苹果服务": `${ICON_CDN_BASE}/Apple.png`,
+    "🏠 私有网络": `${ICON_CDN_BASE}/Home.png`,
+    "🔒 国内服务": `${ICON_CDN_BASE}/China.png`,
+    "🐟 漏网之鱼": `${ICON_CDN_BASE}/Fish.png`,
+    "🛑 广告拦截": `${ICON_CDN_BASE}/Adblock.png`,
+  };
+  const sel = (name, proxies) => {
+    const group = { name, type: "select", proxies: proxies.length ? proxies : ["DIRECT"] };
+    if (GROUP_ICONS[name]) group.icon = GROUP_ICONS[name];
+    return group;
+  };
   const regionGroups = ["🇺🇸 美国", "🇭🇰 香港", "🇸🇬 新加坡", "🏠 家宽节点", "🇯🇵 日本", "🌐 其他", "🎯 中转节点"];
   const fullSelect = (name) => sel(name, ["🚀 节点选择", "DIRECT", "REJECT", ...regionGroups, ...allNames]);
 
