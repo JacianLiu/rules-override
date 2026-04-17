@@ -104,7 +104,7 @@ const GEO_SETTINGS = {
     geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat",
     geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
     mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb",
-    asn: "https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb",
+    asn: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb",
   },
 };
 
@@ -151,9 +151,9 @@ const RULE_PROVIDER_DEFS = [
   { key: "onedrive", kind: "meta-domain", source: "onedrive" },
   { key: "apple", kind: "meta-domain", source: "apple" },
   { key: "geolocation-!cn", kind: "meta-domain", source: "geolocation-!cn" },
-  { key: "geolocation-cn", kind: "meta-domain", source: "geolocation-cn" },
-  { key: "cn", kind: "meta-domain", source: "cn" },
-  { key: "cn-ip", kind: "meta-ip", source: "cn" },
+  // { key: "geolocation-cn", kind: "meta-domain", source: "geolocation-cn" },  // 已替换为 GEOSITE,geolocation-cn（dat 直读，含正则规则）
+  // { key: "cn", kind: "meta-domain", source: "cn" },    // 已替换为 GEOSITE,cn（dat 直读，无需 rule-provider）
+  // { key: "cn-ip", kind: "meta-ip", source: "cn" },     // 已替换为 GEOIP,CN（dat 直读，无需 rule-provider）
   { key: "supplement-cn", kind: "self-domain", source: "supplement-cn" },
   { key: "enhanced-FaaS-in-China-ip", kind: "echs-ip", source: "enhanced-FaaS-in-China", file: "enhanced-FaaS-in-China_ip.mrs" },
 ];
@@ -164,15 +164,18 @@ const RULES = [
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
   "RULE-SET,private,🏠 私有网络",
-  "RULE-SET,geolocation-cn,🔒 国内服务",
+  // "RULE-SET,geolocation-cn,🔒 国内服务",  // 已替换为 GEOSITE,geolocation-cn
+  "GEOSITE,geolocation-cn,🔒 国内服务",
   "RULE-SET,microsoft,Ⓜ️ 微软服务",
   "RULE-SET,onedrive,Ⓜ️ 微软服务",
   "RULE-SET,apple,🍎 苹果服务",
   "RULE-SET,geolocation-!cn,🚀 节点选择",
-  "RULE-SET,cn,🔒 国内服务",
+  // "RULE-SET,cn,🔒 国内服务",          // 已替换为 GEOSITE,cn
+  "GEOSITE,cn,🔒 国内服务",
   "RULE-SET,supplement-cn,🔒 国内服务",
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
-  "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
+  // "RULE-SET,cn-ip,🔒 国内服务,no-resolve",  // 已替换为 GEOIP,CN
+  "GEOIP,CN,🔒 国内服务,no-resolve",
   "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve",
   "MATCH,🐟 漏网之鱼",
 ];
@@ -381,7 +384,8 @@ function ipMrs(url, path) {
 function buildRuleProvider(definition) {
   const metaBase = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo";
   const echsBase = "https://testingcf.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
-  const selfBase = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs";
+  // const selfBase = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs";  // 已改用 list
+  const selfBase = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/list";
 
   if (definition.kind === "meta-domain") {
     return domainMrs(`${metaBase}/geosite/${definition.source}.mrs`, `./ruleset/${definition.source}.mrs`);
@@ -392,7 +396,7 @@ function buildRuleProvider(definition) {
   }
 
   if (definition.kind === "self-domain") {
-    return domainMrs(`${selfBase}/${definition.source}.mrs`, `./ruleset/${definition.source}.mrs`);
+    return { type: "http", behavior: "domain", url: `${selfBase}/${definition.source}.list`, path: `./ruleset/${definition.source}.list`, interval: 86400, format: "text" };
   }
 
   return ipMrs(`${echsBase}/${definition.file}`, `./ruleset/echs-${definition.source}-ip.mrs`);
