@@ -164,17 +164,17 @@ const RULES = [
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
   "RULE-SET,private,🏠 私有网络",
-  // "RULE-SET,geolocation-cn,🔒 国内服务",  // 已替换为 GEOSITE,geolocation-cn
+  "RULE-SET,geolocation-cn,🔒 国内服务",  // 已替换为 GEOSITE,geolocation-cn
   "GEOSITE,geolocation-cn,🔒 国内服务",
   "RULE-SET,microsoft,Ⓜ️ 微软服务",
   "RULE-SET,onedrive,Ⓜ️ 微软服务",
   "RULE-SET,apple,🍎 苹果服务",
   "RULE-SET,geolocation-!cn,🚀 节点选择",
-  // "RULE-SET,cn,🔒 国内服务",          // 已替换为 GEOSITE,cn
+  "RULE-SET,cn,🔒 国内服务",          // 已替换为 GEOSITE,cn
   "GEOSITE,cn,🔒 国内服务",
   "RULE-SET,supplement-cn,🔒 国内服务",
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
-  // "RULE-SET,cn-ip,🔒 国内服务,no-resolve",  // 已替换为 GEOIP,CN
+ "RULE-SET,cn-ip,🔒 国内服务,no-resolve",  // 已替换为 GEOIP,CN
   "GEOIP,CN,🔒 国内服务,no-resolve",
   "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve",
   "MATCH,🐟 漏网之鱼",
