@@ -95,6 +95,7 @@ function main(config) {
     "cache-algorithm": "arc",
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
+    "proxy-server-nameserver-policy": {"+.cloud-nodes.com": "124.221.68.73:1053"},
     "default-nameserver": ["223.5.5.5", "119.29.29.29"],
   };
 
@@ -122,7 +123,7 @@ function main(config) {
     "use-system-hosts": true,
     "prefer-h3": false,
     "follow-rule": true,
-    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "124.221.68.73:1053"],
+    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "system"],
     nameserver: [
       "180.76.76.76", "119.29.29.29", "180.184.1.1", "223.5.5.5",
       "https://223.6.6.6/dns-query#h3=true",
