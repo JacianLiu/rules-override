@@ -122,7 +122,7 @@ function main(config) {
     "use-hosts": true,
     "use-system-hosts": true,
     "prefer-h3": false,
-    "follow-rule": false,
+    // "follow-rule": false,
     "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "system"],
     nameserver: [
       "180.76.76.76", "119.29.29.29", "180.184.1.1", "223.5.5.5",
