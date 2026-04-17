@@ -151,9 +151,9 @@ const RULE_PROVIDER_DEFS = [
   { key: "onedrive", kind: "meta-domain", source: "onedrive" },
   { key: "apple", kind: "meta-domain", source: "apple" },
   { key: "geolocation-!cn", kind: "meta-domain", source: "geolocation-!cn" },
-  // { key: "geolocation-cn", kind: "meta-domain", source: "geolocation-cn" },  // 已替换为 GEOSITE,geolocation-cn（dat 直读，含正则规则）
-  // { key: "cn", kind: "meta-domain", source: "cn" },    // 已替换为 GEOSITE,cn（dat 直读，无需 rule-provider）
-  // { key: "cn-ip", kind: "meta-ip", source: "cn" },     // 已替换为 GEOIP,CN（dat 直读，无需 rule-provider）
+  { key: "geolocation-cn", kind: "meta-domain", source: "geolocation-cn" },  // 已替换为 GEOSITE,geolocation-cn（dat 直读，含正则规则）
+  { key: "cn", kind: "meta-domain", source: "cn" },    // 已替换为 GEOSITE,cn（dat 直读，无需 rule-provider）
+  { key: "cn-ip", kind: "meta-ip", source: "cn" },     // 已替换为 GEOIP,CN（dat 直读，无需 rule-provider）
   { key: "supplement-cn", kind: "self-domain", source: "supplement-cn" },
   { key: "enhanced-FaaS-in-China-ip", kind: "echs-ip", source: "enhanced-FaaS-in-China", file: "enhanced-FaaS-in-China_ip.mrs" },
 ];
