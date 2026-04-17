@@ -122,7 +122,7 @@ function main(config) {
     "use-system-hosts": true,
     "prefer-h3": false,
     "follow-rule": true,
-    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"],
+    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "124.221.68.73:1053"],
     nameserver: [
       "180.76.76.76", "119.29.29.29", "180.184.1.1", "223.5.5.5",
       "https://223.6.6.6/dns-query#h3=true",
@@ -177,7 +177,7 @@ function main(config) {
       "https://1.1.1.1/dns-query#🚀 节点选择",
       "https://8.8.8.8/dns-query#🚀 节点选择",
     ],
-    "proxy-server-nameserver": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT", "system"],
+    "proxy-server-nameserver": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT", "124.221.68.73:1053", "system"],
     "direct-nameserver": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT", "system"],
     "direct-nameserver-follow-policy": true,
     "fake-ip-filter": [
