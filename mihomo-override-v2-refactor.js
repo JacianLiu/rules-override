@@ -164,6 +164,8 @@ const RULES = [
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
   "RULE-SET,private,🏠 私有网络",
+  "DOMAIN-KEYWORD,stun,🚀 节点选择",
+  "DOMAIN-KEYWORD,turn,🚀 节点选择",
   // "RULE-SET,geolocation-cn,🔒 国内服务",  // 已替换为 GEOSITE,geolocation-cn
   "GEOSITE,geolocation-cn,🔒 国内服务",
   "RULE-SET,microsoft,Ⓜ️ 微软服务",
@@ -174,6 +176,9 @@ const RULES = [
   "GEOSITE,cn,🔒 国内服务",
   "RULE-SET,supplement-cn,🔒 国内服务",
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
+  "AND,((NETWORK,UDP),(DST-PORT,3478)),🚀 节点选择",
+  "AND,((NETWORK,UDP),(DST-PORT,5349)),🚀 节点选择",
+  "AND,((NETWORK,TCP),(DST-PORT,5349)),🚀 节点选择",
   // "RULE-SET,cn-ip,🔒 国内服务,no-resolve",  // 已替换为 GEOIP,CN
   "GEOIP,CN,🔒 国内服务,no-resolve",
   "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve",
@@ -272,7 +277,7 @@ function buildProxyGroups(classified) {
 // Stash 的 fake-ip 排除列表相对更长，单独提取出来便于维护和增删。
 function buildStashFakeIpFilter() {
   return [
-    "+.lan", "+.local", "stun.*.*.*", "stun.*.*",
+    "+.lan", "+.local",
     "time.windows.com", "time.nist.gov", "time.apple.com", "time.asia.apple.com",
     "*.ntp.org.cn", "*.openwrt.pool.ntp.org", "time1.cloud.tencent.com",
     "time.ustc.edu.cn", "pool.ntp.org", "ntp.ubuntu.com",
@@ -347,7 +352,6 @@ function buildMihomoDnsPatch() {
       "geosite:private",
       "geosite:cn",
       "geosite:connectivity-check",
-      "stun.*.*.*", "stun.*.*",
       "*.*.*.srv.nintendo.net", "*.*.stun.playstation.net",
       "xbox.*.*.microsoft.com", "*.ipv6.microsoft.com", "*.*.xboxlive.com",
       "+.xiaojukeji.com", "+.didichuxing.com", "+.didiglobal.com",
