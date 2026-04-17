@@ -251,8 +251,8 @@ function main(config) {
 
   // ====== 规则提供者 ======
   const B  = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo";
-  const E  = "https://cdn.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
-  const S  = "https://cdn.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs"
+  const E  = "https://testingcf.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
+  const S  = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs"
   const dp = (n) => ({ type: "http", behavior: "domain", url: `${B}/geosite/${n}.mrs`, path: `./ruleset/${n}.mrs`,    interval: 86400, format: "mrs" });
   const ip = (n) => ({ type: "http", behavior: "ipcidr", url: `${B}/geoip/${n}.mrs`,   path: `./ruleset/${n}-ip.mrs`, interval: 86400, format: "mrs" });
   const ei = (n, file) => ({ type: "http", behavior: "ipcidr", url: `${E}/${file}`, path: `./ruleset/echs-${n}-ip.mrs`, interval: 86400, format: "mrs" });
