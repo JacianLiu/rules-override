@@ -155,6 +155,7 @@ const RULE_PROVIDER_DEFS = [
   { key: "cn", kind: "meta-domain", source: "cn" }, 
   { key: "cn-ip", kind: "meta-ip", source: "cn" }, 
   { key: "supplement-cn", kind: "self-domain", source: "supplement-cn" },
+  { key: "supplement-outside.list", kind: "self-domain", source: "supplement-outside.list" },
   { key: "enhanced-FaaS-in-China-ip", kind: "echs-ip", source: "enhanced-FaaS-in-China", file: "enhanced-FaaS-in-China_ip.mrs" },
 ];
 
@@ -164,6 +165,7 @@ const RULES = [
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
   "RULE-SET,private,🏠 私有网络",
+  "RULE-SET,supplement-outside.list,🚀 节点选择",
   "RULE-SET,geolocation-cn,🔒 国内服务", 
   // "GEOSITE,geolocation-cn,🔒 国内服务",
   "RULE-SET,microsoft,Ⓜ️ 微软服务",
