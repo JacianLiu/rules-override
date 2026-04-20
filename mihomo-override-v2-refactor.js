@@ -252,6 +252,7 @@ function fullSelect(name, allNames) {
 function buildProxyGroups(classified) {
   const { allNames, us, hk, sg, jp, jiakuan, other, transit } = classified;
   return [
+    sel("🚀 节点选择", [...REGION_GROUPS, "DIRECT", ...allNames]),
     sel("🇺🇸 美国", [...us]),
     sel("🇭🇰 香港", [...hk]),
     sel("🇸🇬 新加坡", [...sg]),
@@ -259,7 +260,6 @@ function buildProxyGroups(classified) {
     sel("🏠 家宽节点", [...jiakuan]),
     sel("🌐 其他", [...other]),
     sel("🎯 中转节点", [...transit]),
-    sel("🚀 节点选择", ["DIRECT", ...REGION_GROUPS, ...allNames]),
     fullSelect("✨ Gemini", allNames),
     sel("🤖 AI 服务", ["🚀 节点选择", "🏠 家宽节点"]),
     fullSelect("Ⓜ️ 微软服务", allNames),
