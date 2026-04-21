@@ -65,6 +65,7 @@ const DNS_POLICY_DIDI_STASH = {
   "+.diditaxi.com.cn": "system",
   "+.intra.xiaojukeji.com": "system",
   "+.xiaojukeji.com": "system",
+  "+.jacian.com": "system",
 };
 
 const DIDI_NS = ["172.24.130.235", "223.5.5.5", "1.12.12.12", "114.114.114.114"];
@@ -293,7 +294,7 @@ function buildStashFakeIpFilter() {
     "speedtest.cros.wr.pvp.net", "*.local", "time.*.com",
     "*.market.xiaomi.com", "ntp.*.com",
     "+.xiaojukeji.com", "+.didichuxing.com", "+.didiglobal.com",
-    "+.didistatic.com", "+.diditaxi.com.cn",
+    "+.didistatic.com", "+.diditaxi.com.cn", "+.jacian.com",
   ];
 }
 
@@ -353,11 +354,12 @@ function buildMihomoDnsPatch() {
       "*.*.*.srv.nintendo.net", "*.*.stun.playstation.net",
       "xbox.*.*.microsoft.com", "*.ipv6.microsoft.com", "*.*.xboxlive.com",
       "+.xiaojukeji.com", "+.didichuxing.com", "+.didiglobal.com",
-      "+.didistatic.com", "+.diditaxi.com.cn",
+      "+.didistatic.com", "+.diditaxi.com.cn", "+.jacian.com",
     ],
     "nameserver-policy": {
       "+.cloud-nodes.com": ["124.221.68.73:1053"],
       ...DNS_POLICY_DIDI_MIHOMO,
+      "+.jacian.com": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT", "system"],
       "geosite:cn": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
       "geosite:private": ["system"],
       "geosite:google-cn": ["223.5.5.5#DIRECT", "119.29.29.29#DIRECT"],
