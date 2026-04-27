@@ -156,7 +156,7 @@ const RULE_PROVIDER_DEFS = [
   { key: "cn", kind: "meta-domain", source: "cn" }, 
   { key: "cn-ip", kind: "meta-ip", source: "cn" }, 
   { key: "supplement-cn", kind: "self-domain", source: "supplement-cn" },
-  { key: "supplement-outside.list", kind: "self-domain", source: "supplement-outside.list" },
+  { key: "supplement-outside", kind: "self-domain", source: "supplement-outside" },
   { key: "enhanced-FaaS-in-China-ip", kind: "echs-ip", source: "enhanced-FaaS-in-China", file: "enhanced-FaaS-in-China_ip.mrs" },
 ];
 
