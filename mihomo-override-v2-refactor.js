@@ -299,27 +299,31 @@ function buildStashFakeIpFilter() {
 }
 
 // Stash 专属 DNS patch：在共用底座上补齐其 hosts / fallback / fake-ip 策略。
+//
+// 依据 https://stash.wiki/faq/effective-stash 的优化建议：
+// 1. DNS 服务器 1-2 个即可满足移动设备需求，过多无益。
+// 2. 避免 DoH/DoT/DoQ：这些协议比传统 UDP 查询消耗更多内存并增加延迟；
+//    Stash 运行在 iOS Network Extension 下，内存受限（iOS 15+ 为 50 MB），
+//    多余的加密 DNS 开销会显著增加崩溃风险。
+// 3. 中国用户应使用国内 DNS，8.8.8.8 / 1.1.1.1 等境外服务在国内实际效益极低。
+// 4. Stash 的 Fake IP 机制本身已避免大量不必要的本地查询，不需要堆砌 fallback。
+//
+// 基于以上原则：
+// - nameserver：精简为 2 个国内 UDP DNS（223.5.5.5 / 119.29.29.29），去掉所有 DoH。
+// - proxy-server-nameserver：同样改为国内 UDP DNS，去掉 DoH。
+// - fallback：精简为 2 个境外 UDP DNS（8.8.8.8 / 1.1.1.1），仅用于直连境外域名的
+//   fallback 解析，去掉 DoH/DoT；境外域名走代理时 fake-ip 机制本身已足够。
 function buildStashDnsPatch() {
   return {
     "use-hosts": true,
     "use-system-hosts": true,
     "prefer-h3": false,
-    "proxy-server-nameserver": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "system"],
-    nameserver: [
-      "180.76.76.76", "119.29.29.29", "180.184.1.1", "223.5.5.5",
-      "https://223.6.6.6/dns-query#h3=true",
-      "https://dns.alidns.com/dns-query",
-      "https://doh.pub/dns-query",
-    ],
-    fallback: [
-      "https://000000.dns.nextdns.io/dns-query#h3=true",
-      "https://public.dns.iij.jp/dns-query",
-      "https://101.101.101.101/dns-query",
-      "https://208.67.220.220/dns-query",
-      "tls://8.8.4.4", "tls://1.0.0.1:853",
-      "https://cloudflare-dns.com/dns-query",
-      "https://dns.google/dns-query",
-    ],
+    // 国内 UDP DNS，1-2 个即可，不引入 DoH/DoT
+    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"],
+    nameserver: ["223.5.5.5", "119.29.29.29"],
+    // fallback 仅保留 2 个境外 UDP DNS，用于直连境外域名的兜底解析；
+    // 走代理的域名由 fake-ip + 代理节点侧 DNS 处理，不依赖此处。
+    fallback: ["8.8.8.8", "1.1.1.1"],
     "fallback-filter": {
       geoip: true,
       ipcidr: ["240.0.0.0/4", "0.0.0.0/32", "127.0.0.1/32"],
