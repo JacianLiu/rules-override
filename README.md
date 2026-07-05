@@ -36,11 +36,14 @@
 
 ```text
 .
-├── mihomo-override-v2-refactor.js   # 当前主维护版本
+├── mihomo-override-v2-refactor.js   # 当前主维护版本（mihomo / Stash）
 ├── mihomo-override-v2.js            # 旧版/对照版本
+├── loon/
+│   └── loon.conf                    # Loon 配置文件（基于重构版转换而来）
 └── rules/
     └── list/
-        └── supplement-cn.list       # 国内补充规则
+        ├── supplement-cn.list       # 国内补充规则
+        └── supplement-outside.list  # 境外补充规则
 ```
 
 ## 这套脚本主要做什么
