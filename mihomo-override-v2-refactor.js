@@ -161,21 +161,36 @@ const RULE_PROVIDER_DEFS = [
 ];
 
 // 规则文本同样保持声明式，顺序就是最终写入配置时的匹配顺序。
+//
+// 顺序设计原则：
+// 1. 用户自定义列表（supplement-*）优先级最高，放在所有自动列表之前。
+// 2. "确定是CN"的规则必须排在 geolocation-!cn 之前——否则一旦某域名同时出现在
+//    cn/supplement-cn 和 geolocation-!cn 中，会被 !cn 先截走走代理，后面的CN规则永远看不到。
+// 3. DOMAIN-SUFFIX,cn 做 .cn TLD 兜底：不在任何列表的小 .cn 域名也能直连。
+// 4. IP 规则（no-resolve）放最后，避免不必要的 DNS 解析。
 const RULES = [
   "RULE-SET,category-ads-all,🛑 广告拦截",
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
   "RULE-SET,private,🏠 私有网络",
+  // 用户自定义：明确要走代理的域名，最先匹配
   "RULE-SET,supplement-outside,🚀 节点选择",
-  "RULE-SET,geolocation-cn,🔒 国内服务", 
+  // 用户自定义 CN 补充列表：优先于所有自动 CN/非CN 列表，避免被 geolocation-!cn 误判截走
+  "RULE-SET,supplement-cn,🔒 国内服务",
+  // 自动 CN 域名列表：同样必须在 geolocation-!cn 之前，防止 !cn 列表误判覆盖
+  "RULE-SET,geolocation-cn,🔒 国内服务",
   // "GEOSITE,geolocation-cn,🔒 国内服务",
+  "RULE-SET,cn,🔒 国内服务",
+  // "GEOSITE,cn,🔒 国内服务",
+  // .cn TLD 兜底：不在任何规则集中的小 .cn 域名直接走直连，避免漏到 MATCH
+  "DOMAIN-SUFFIX,cn,🔒 国内服务",
+  // 特定服务（微软/苹果）：放在 geolocation-!cn 之前，优先按服务分组路由
   "RULE-SET,microsoft,Ⓜ️ 微软服务",
   "RULE-SET,onedrive,Ⓜ️ 微软服务",
   "RULE-SET,apple,🍎 苹果服务",
+  // 非 CN 域名：经过上面所有 CN 规则过滤后，剩下的才走代理
   "RULE-SET,geolocation-!cn,🚀 节点选择",
-  "RULE-SET,cn,🔒 国内服务", 
-  // "GEOSITE,cn,🔒 国内服务",
-  "RULE-SET,supplement-cn,🔒 国内服务",
+  // IP 规则放最后（no-resolve 跳过 DNS，仅在 IP 已知时生效）
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
   "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
   // "GEOIP,CN,🔒 国内服务,no-resolve",
@@ -267,7 +282,9 @@ function buildProxyGroups(classified) {
     fullSelect("🍎 苹果服务", allNames),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...REGION_GROUPS, "🚀 节点选择", ...allNames]),
     sel("🔒 国内服务", ["DIRECT", "REJECT", ...REGION_GROUPS, "🚀 节点选择", ...allNames]),
-    fullSelect("🐟 漏网之鱼", allNames),
+    // 漏网之鱼默认 DIRECT：规则链结束时大多数漏掉的是国内小域名，直连更合理；
+    // 需要代理的可以手动切换到 🚀 节点选择。
+    sel("🐟 漏网之鱼", ["DIRECT", "🚀 节点选择", "REJECT", ...REGION_GROUPS, ...allNames]),
     sel("🛑 广告拦截", ["REJECT", "DIRECT", "🚀 节点选择"]),
   ];
 }
