@@ -159,7 +159,6 @@ const RULE_PROVIDER_DEFS = [
   { key: "cn-ip", kind: "meta-ip", source: "cn" }, 
   { key: "supplement-cn", kind: "self-domain", source: "supplement-cn" },
   { key: "supplement-outside", kind: "self-domain", source: "supplement-outside" },
-  { key: "enhanced-FaaS-in-China-ip", kind: "echs-ip", source: "enhanced-FaaS-in-China", file: "enhanced-FaaS-in-China_ip.mrs" },
 ];
 
 // 规则文本同样保持声明式，顺序就是最终写入配置时的匹配顺序。
@@ -198,7 +197,6 @@ const RULES = [
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
   "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
   // "GEOIP,CN,🔒 国内服务,no-resolve",
-  "RULE-SET,enhanced-FaaS-in-China-ip,🔒 国内服务,no-resolve",
   "MATCH,🐟 漏网之鱼",
 ];
 
@@ -413,7 +411,6 @@ function ipMrs(url, path) {
 // 把声明式 provider 定义转换成 mihomo 实际需要的 rule-providers 结构。
 function buildRuleProvider(definition) {
   const metaBase = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo";
-  const echsBase = "https://testingcf.jsdelivr.net/gh/echs-top/proxy@main/rules/mrs";
   // const selfBase = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/mrs";  // 已改用 list
   const selfBase = "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/list";
 
@@ -429,7 +426,7 @@ function buildRuleProvider(definition) {
     return { type: "http", behavior: "domain", url: `${selfBase}/${definition.source}.list`, path: `./ruleset/${definition.source}.list`, interval: 86400, format: "text" };
   }
 
-  return ipMrs(`${echsBase}/${definition.file}`, `./ruleset/echs-${definition.source}-ip.mrs`);
+  throw new Error(`Unsupported rule provider kind: ${definition.kind}`);
 }
 
 // 遍历声明式定义，生成最终 rule-providers 字典。
