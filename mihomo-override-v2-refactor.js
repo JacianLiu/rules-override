@@ -133,6 +133,7 @@ const GROUP_ICONS = {
   "🚀 节点选择": `${ICON_CDN_BASE}/Niche_Link.png`,
   "✨ Gemini": `${ICON_CDN_BASE}/Google.png`,
   "🤖 AI 服务": `${ICON_CDN_BASE}/AI_Tree.png`,
+  "📹 Zoom": `${ICON_CDN_BASE}/Remote.png`,
   "Ⓜ️ 微软服务": `${ICON_CDN_BASE}/Microsoft.png`,
   "🍎 苹果服务": `${ICON_CDN_BASE}/Apple.png`,
   "🏠 私有网络": `${ICON_CDN_BASE}/Home.png`,
@@ -148,6 +149,7 @@ const RULE_PROVIDER_DEFS = [
   { key: "private-ip", kind: "meta-ip", source: "private" },
   { key: "google-gemini", kind: "meta-domain", source: "google-gemini" },
   { key: "category-ai-chat-!cn", kind: "meta-domain", source: "category-ai-chat-!cn" },
+  { key: "zoom", kind: "meta-domain", source: "zoom" },
   { key: "microsoft", kind: "meta-domain", source: "microsoft" },
   { key: "onedrive", kind: "meta-domain", source: "onedrive" },
   { key: "apple", kind: "meta-domain", source: "apple" },
@@ -172,6 +174,8 @@ const RULES = [
   "RULE-SET,category-ads-all,🛑 广告拦截",
   "RULE-SET,google-gemini,✨ Gemini",
   "RULE-SET,category-ai-chat-!cn,🤖 AI 服务",
+  // Zoom 同时包含 zoom.com.cn，必须放在 CN / 非 CN 汇总规则之前才能完整进入独立分组
+  "RULE-SET,zoom,📹 Zoom",
   "RULE-SET,private,🏠 私有网络",
   // 用户自定义：明确要走代理的域名，最先匹配
   "RULE-SET,supplement-outside,🚀 节点选择",
@@ -278,6 +282,7 @@ function buildProxyGroups(classified) {
     sel("🎯 中转节点", [...transit]),
     fullSelect("✨ Gemini", allNames),
     sel("🤖 AI 服务", ["🚀 节点选择", "🏠 家宽节点"]),
+    fullSelect("📹 Zoom", allNames),
     fullSelect("Ⓜ️ 微软服务", allNames),
     fullSelect("🍎 苹果服务", allNames),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...REGION_GROUPS, "🚀 节点选择", ...allNames]),
