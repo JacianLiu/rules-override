@@ -282,7 +282,8 @@ function buildProxyGroups(classified) {
     sel("🤖 AI 服务", ["🚀 节点选择", "🏠 家宽节点"]),
     fullSelect("📹 Zoom", allNames),
     fullSelect("Ⓜ️ 微软服务", allNames),
-    fullSelect("🍎 苹果服务", allNames),
+    // Apple 服务默认直连，同时保留手动切换代理节点的能力。
+    sel("🍎 苹果服务", ["DIRECT", "🚀 节点选择", "REJECT", ...REGION_GROUPS, ...allNames]),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...REGION_GROUPS, "🚀 节点选择", ...allNames]),
     sel("🔒 国内服务", ["DIRECT", "REJECT", ...REGION_GROUPS, "🚀 节点选择", ...allNames]),
     // 漏网之鱼默认 DIRECT：规则链结束时大多数漏掉的是国内小域名，直连更合理；

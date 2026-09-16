@@ -265,7 +265,8 @@ function main(config) {
     fullSelect("✨ Gemini"),
     sel("🤖 AI 服务", ["🚀 节点选择", "🏠 家宽节点"]),
     fullSelect("Ⓜ️ 微软服务"),
-    fullSelect("🍎 苹果服务"),
+    // Apple 服务默认直连，同时保留手动切换代理节点的能力。
+    sel("🍎 苹果服务", ["DIRECT", "🚀 节点选择", "REJECT", ...regionGroups, ...allNames]),
     sel("🏠 私有网络", ["DIRECT", "REJECT", ...regionGroups, "🚀 节点选择", ...allNames]),
     sel("🔒 国内服务", ["DIRECT", "REJECT", ...regionGroups, "🚀 节点选择", ...allNames]),
     fullSelect("🐟 漏网之鱼"),
