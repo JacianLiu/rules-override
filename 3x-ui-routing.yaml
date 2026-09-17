@@ -1,0 +1,371 @@
+# 3x-ui Clash / Mihomo 全局路由规则
+#
+# 使用位置：面板设置 -> 订阅 -> Clash / Mihomo -> 全局路由规则
+# 推荐填写此文件的 HTTPS 地址，而不是把内容粘贴到面板中：
+# https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/3x-ui-routing.yaml
+#
+# 说明：
+# - 3x-ui 负责生成 proxies；本文件只定义 proxy-groups、rule-providers 和 rules。
+# - include-all 会动态纳入当前订阅中的全部节点，因此无需写死节点名称。
+# - DNS、TUN、sniffer、url-rewrite 和 dialer-proxy 不属于 3x-ui 远程路由源的能力范围。
+
+proxy-groups:
+  - name: "🚀 节点选择"
+    type: select
+    proxies:
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+      - DIRECT
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Niche_Link.png"
+
+  - name: "🇺🇸 美国"
+    type: select
+    include-all: true
+    filter: '(?i)美国|(?<![A-Z])US(?![A-Z])|USA|UNITED[ _-]?STATES|NEW[ _-]?YORK|LOS[ _-]?ANGELES|SAN[ _-]?JOSE|SAN[ _-]?FRANCISCO|SEATTLE|CHICAGO|DALLAS|LAX|SJC|SFO|🇺🇸'
+    exclude-filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/USA.png"
+
+  - name: "🇭🇰 香港"
+    type: select
+    include-all: true
+    filter: '(?i)香港|(?<![A-Z])HK(?![A-Z])|HKG|HONG[ _-]?KONG|🇭🇰'
+    exclude-filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Hong_Kong.png"
+
+  - name: "🇸🇬 新加坡"
+    type: select
+    include-all: true
+    filter: '(?i)新加坡|狮城|(?<![A-Z])SG(?![A-Z])|SGP|SINGAPORE|SIN|🇸🇬'
+    exclude-filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Singapore.png"
+
+  - name: "🇯🇵 日本"
+    type: select
+    include-all: true
+    filter: '(?i)日本|东京|大阪|(?<![A-Z])JP(?![A-Z])|JPN|JAPAN|TOKYO|OSAKA|NRT|HND|TYO|🇯🇵'
+    exclude-filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Japan.png"
+
+  - name: "🏠 家宽节点"
+    type: select
+    include-all: true
+    filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Home.png"
+
+  - name: "🌐 其他"
+    type: select
+    include-all: true
+    exclude-filter: '(?i)家宽|Frontier|Residential|美国|(?<![A-Z])US(?![A-Z])|USA|UNITED[ _-]?STATES|NEW[ _-]?YORK|LOS[ _-]?ANGELES|SAN[ _-]?JOSE|SAN[ _-]?FRANCISCO|SEATTLE|CHICAGO|DALLAS|LAX|SJC|SFO|🇺🇸|香港|(?<![A-Z])HK(?![A-Z])|HKG|HONG[ _-]?KONG|🇭🇰|新加坡|狮城|(?<![A-Z])SG(?![A-Z])|SGP|SINGAPORE|SIN|🇸🇬|日本|东京|大阪|(?<![A-Z])JP(?![A-Z])|JPN|JAPAN|TOKYO|OSAKA|NRT|HND|TYO|🇯🇵'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Other.png"
+
+  # 与现有 Sub-Store 脚本保持一致：中转候选取“美国非家宽”节点。
+  - name: "🎯 中转节点"
+    type: select
+    include-all: true
+    filter: '(?i)美国|(?<![A-Z])US(?![A-Z])|USA|UNITED[ _-]?STATES|NEW[ _-]?YORK|LOS[ _-]?ANGELES|SAN[ _-]?JOSE|SAN[ _-]?FRANCISCO|SEATTLE|CHICAGO|DALLAS|LAX|SJC|SFO|🇺🇸'
+    exclude-filter: '(?i)家宽|Frontier|Residential'
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Transfer.png"
+
+  - name: "✨ Gemini"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - DIRECT
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Google.png"
+
+  - name: "🤖 AI 服务"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - "🏠 家宽节点"
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/AI_Tree.png"
+
+  - name: "📹 Zoom"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - DIRECT
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Remote.png"
+
+  - name: "Ⓜ️ 微软服务"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - DIRECT
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Microsoft.png"
+
+  - name: "🍎 苹果服务"
+    type: select
+    proxies:
+      - DIRECT
+      - "🚀 节点选择"
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Apple.png"
+
+  - name: "🏠 私有网络"
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+      - "🚀 节点选择"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Home.png"
+
+  - name: "🔒 国内服务"
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+      - "🚀 节点选择"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/China.png"
+
+  - name: "🐟 漏网之鱼"
+    type: select
+    proxies:
+      - DIRECT
+      - "🚀 节点选择"
+      - REJECT
+      - "🇺🇸 美国"
+      - "🇭🇰 香港"
+      - "🇸🇬 新加坡"
+      - "🏠 家宽节点"
+      - "🇯🇵 日本"
+      - "🌐 其他"
+      - "🎯 中转节点"
+    include-all: true
+    exclude-type: direct
+    empty-fallback: DIRECT
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Fish.png"
+
+  - name: "🛑 广告拦截"
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - "🚀 节点选择"
+    icon: "https://testingcf.jsdelivr.net/gh/Vbaethon/HOMOMIX@main/Icon/Color/Adblock.png"
+
+rule-providers:
+  category-ads-all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ads-all.mrs"
+    path: ./ruleset/category-ads-all.mrs
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.mrs"
+    path: ./ruleset/private.mrs
+    interval: 86400
+
+  private-ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.mrs"
+    path: ./ruleset/private-ip.mrs
+    interval: 86400
+
+  google-gemini:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google-gemini.mrs"
+    path: ./ruleset/google-gemini.mrs
+    interval: 86400
+
+  category-ai-chat-!cn:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.mrs"
+    path: ./ruleset/category-ai-chat-!cn.mrs
+    interval: 86400
+
+  zoom:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/zoom.mrs"
+    path: ./ruleset/zoom.mrs
+    interval: 86400
+
+  microsoft:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs"
+    path: ./ruleset/microsoft.mrs
+    interval: 86400
+
+  onedrive:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/onedrive.mrs"
+    path: ./ruleset/onedrive.mrs
+    interval: 86400
+
+  apple:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.mrs"
+    path: ./ruleset/apple.mrs
+    interval: 86400
+
+  geolocation-!cn:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.mrs"
+    path: ./ruleset/geolocation-!cn.mrs
+    interval: 86400
+
+  geolocation-cn:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-cn.mrs"
+    path: ./ruleset/geolocation-cn.mrs
+    interval: 86400
+
+  cn:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs"
+    path: ./ruleset/cn.mrs
+    interval: 86400
+
+  cn-ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs"
+    path: ./ruleset/cn-ip.mrs
+    interval: 86400
+
+  supplement-cn:
+    type: http
+    behavior: domain
+    format: text
+    url: "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/list/supplement-cn.list"
+    path: ./ruleset/supplement-cn.list
+    interval: 86400
+
+  supplement-outside:
+    type: http
+    behavior: domain
+    format: text
+    url: "https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/rules/list/supplement-outside.list"
+    path: ./ruleset/supplement-outside.list
+    interval: 86400
+
+rules:
+  - "RULE-SET,category-ads-all,🛑 广告拦截"
+  - "RULE-SET,google-gemini,✨ Gemini"
+  - "RULE-SET,category-ai-chat-!cn,🤖 AI 服务"
+  - "RULE-SET,zoom,📹 Zoom"
+  - "RULE-SET,private,🏠 私有网络"
+  - "RULE-SET,supplement-outside,🚀 节点选择"
+  - "RULE-SET,supplement-cn,🔒 国内服务"
+  - "RULE-SET,geolocation-cn,🔒 国内服务"
+  - "RULE-SET,cn,🔒 国内服务"
+  - "DOMAIN-SUFFIX,cn,🔒 国内服务"
+  - "RULE-SET,microsoft,Ⓜ️ 微软服务"
+  - "RULE-SET,onedrive,Ⓜ️ 微软服务"
+  - "RULE-SET,apple,🍎 苹果服务"
+  - "RULE-SET,geolocation-!cn,🚀 节点选择"
+  - "RULE-SET,private-ip,🏠 私有网络,no-resolve"
+  - "RULE-SET,cn-ip,🔒 国内服务,no-resolve"
+  - "MATCH,🐟 漏网之鱼"

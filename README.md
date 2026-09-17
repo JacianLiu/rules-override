@@ -38,6 +38,7 @@
 .
 ├── mihomo-override-v2-refactor.js   # 当前主维护版本（mihomo / Stash）
 ├── mihomo-override-v2.js            # 旧版/对照版本
+├── 3x-ui-routing.yaml               # 3x-ui Clash / Mihomo 全局路由规则
 ├── loon/
 │   └── loon.conf                    # Loon 配置文件（基于重构版转换而来）
 └── rules/
@@ -106,6 +107,40 @@
 - 让客户端在订阅处理阶段自动生成最终配置
 
 如果你只是想复用当前策略，通常只需要引用重构版脚本即可。
+
+## 3x-ui 使用方式
+
+`3x-ui-routing.yaml` 是从主维护脚本中抽取出的静态路由层，供 3x-ui 生成
+Clash / Mihomo 订阅时合并使用。它包含：
+
+- 动态节点分组（通过 `include-all` 和名称过滤器实现）
+- `rule-providers`
+- 与主维护脚本一致的有序 `rules`
+
+在 3x-ui 中进入：
+
+```text
+面板设置 -> 订阅 -> Clash / Mihomo -> 全局路由规则
+```
+
+启用路由并填写：
+
+```text
+https://testingcf.jsdelivr.net/gh/JacianLiu/rules-override@refs/heads/main/3x-ui-routing.yaml
+```
+
+客户端需要导入 3x-ui 生成的 Clash / Mihomo YAML 订阅，而不是普通 Base64
+节点订阅。建议使用支持远程 `proxy-groups`、`rule-providers` 和 `rules` 合并的
+新版 3x-ui。
+
+这个静态文件不能替代 Sub-Store 覆写脚本中的全部能力。以下配置不会由 3x-ui
+远程路由规则下发：
+
+- DNS / Fake-IP
+- TUN / sniffer / geodata
+- `url-rewrite`
+- 根据 User-Agent 区分 Stash 和 Mihomo
+- 给“落地”节点动态写入 `dialer-proxy`
 
 ## 当前规则策略说明
 
