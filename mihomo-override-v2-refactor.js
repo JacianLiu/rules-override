@@ -196,7 +196,9 @@ const RULES = [
   // IP 规则放最后（no-resolve 跳过 DNS，仅在 IP 已知时生效）
   "RULE-SET,private-ip,🏠 私有网络,no-resolve",
   "RULE-SET,cn-ip,🔒 国内服务,no-resolve",
-  // "GEOIP,CN,🔒 国内服务,no-resolve",
+  // GEOIP,CN 兜底（不带 no-resolve）：对漏过域名清单的国内域名做解析后按 IP 归属兜回直连，
+  // 避免国内小站因不在 geosite/supplement-cn 列表里而漏到 MATCH。
+  "GEOIP,CN,🔒 国内服务",
   "MATCH,🐟 漏网之鱼",
 ];
 
