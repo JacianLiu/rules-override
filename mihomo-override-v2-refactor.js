@@ -68,7 +68,7 @@ const DNS_POLICY_DIDI_STASH = {
   "+.jacian.com": "system",
 };
 
-const DIDI_NS = ["172.24.130.235", "223.5.5.5", "1.12.12.12", "114.114.114.114"];
+const DIDI_NS = ["172.24.130.233", "172.24.130.235", "172.20.1.2", "223.5.5.5", "1.12.12.12", "114.114.114.114"];
 
 // mihomo 侧改为显式 nameserver 列表，便于更细地控制命中策略。
 const DNS_POLICY_DIDI_MIHOMO = {
